@@ -45,12 +45,13 @@ async def predict(request):
     predictions_np = predictions.numpy()
     predicted_class = int(np.argmax(predictions_np))
     confidence = float(np.max(predictions_np))
-    
+    confidence = round(confidence, 4)*100
     # Map class index to label.
     label_map = {0: "Benign", 1: "Malignant"}
     result = {
         "predicted_class": label_map.get(predicted_class, "Unknown"),
-        "confidence": f"{confidence:.4f}"
+        "confidence": f"{confidence:.2f}%",
+        "predictions": predictions_np.tolist()
     }
     return JSONResponse(result)
 

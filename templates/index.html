@@ -1,21 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Breast Cancer Detector</title>
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Awareness</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <h1>Breast Cancer Detector</h1>
-    <p>Select an image to upload and get a prediction:</p>
-    <form id="uploadForm">
-      <input type="file" id="imageInput" name="file" accept="image/*" required>
-      <button type="submit">Upload</button>
-    </form>
-    <div id="result"></div>
-  </div>
-  <script src="/static/script.js"></script>
+    <header>
+        <nav class="navbar">
+            <div class="nav-left">
+                <div class="nav-icon">
+                    <!-- Replace with your Icon -->
+                    <img src="/static/image-modified.png" alt="Website Icon" style="height: 40px;">
+                </div>
+            </div>
+            <div class="nav-right">
+                <a href="#">Home</a>
+                <a href="#">Chat</a>
+                <a href="#">Contact Us</a>
+                <a href="#">NGO Donation</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="hero-text">
+                <h2>Understanding Breast Cancer</h2>
+                <p>Breast cancer is a disease in which cells in the breast grow out of control. It is the most common cancer diagnosed in women worldwide. Early detection and awareness are crucial in improving outcomes.</p>
+                <p>This website aims to provide information, support, and resources related to breast cancer, detection, and support systems.</p>
+            </div>
+            <div class="hero-video">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/YOUR_YOUTUBE_VIDEO_ID?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <p style="font-size: 0.8em; margin-top: 5px; color: #777;">Source: YouTube (Replace YOUR_YOUTUBE_VIDEO_ID)</p>
+            </div>
+        </section>
+
+        <section class="upload-section">
+            <h2><a href="templates/upload.html">Upload Mammograms for BC Detection</a></h2>
+            <p>Visit this page to learn about uploading mammograms for our breast cancer detection model. (This link would lead to a separate page 'upload.html')</p>
+        </section>
+
+        <section class="philosophy-section">
+            <h2>Our Philosophy</h2>
+            <p>"Empowering women through knowledge and technology in the fight against breast cancer."</p>
+            <p>We believe in a future where early detection and accessible support systems make a significant difference in the lives of those affected by breast cancer.</p>
+        </section>
+
+        <section class="accuracy-section">
+            <h2>Our Prediction Model & Partnerships</h2>
+            <p>Our prediction model achieves an accuracy of approximately 95% in detecting potential indicators of breast cancer from mammograms.  (Note: This is a placeholder accuracy, please use actual figures).</p>
+            <p>We are proud to be connected with:</p>
+            <ul>
+                <li>Reputable NGOs: [List NGO Names]</li>
+                <li>Leading Doctors: [List Doctor Names/Specializations]</li>
+                <li>Partner Hospitals: [List Hospital Names]</li>
+            </ul>
+        </section>
+
+        <section class="contact-section">
+            <h2>Contact Us</h2>
+            <p>We'd love to hear from you! For inquiries, support, or collaborations, please reach out to us.</p>
+            <div class="contact-details">
+                <p><strong>Email:</strong> <a href="mailto:info@example.org">info@example.org</a></p>
+                <p><strong>Phone:</strong> +1-555-123-4567</p>
+                <p><strong>Address:</strong> 123 Pastel Lane, Cityville, State, Zip Code</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2023 Developed by Psypherion</p>
+    </footer>
+
 </body>
 </html>

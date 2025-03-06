@@ -11,8 +11,9 @@ document.getElementById("uploadForm").addEventListener("submit", async function(
     const formData = new FormData();
     formData.append("file", file);
     
-    // Show a loading message.
+    // Show a loading message in the result div.
     const resultDiv = document.getElementById("result");
+    resultDiv.style.display = 'block';
     resultDiv.textContent = "Uploading and processing image...";
     
     try {
@@ -27,7 +28,23 @@ document.getElementById("uploadForm").addEventListener("submit", async function(
       }
       
       const data = await response.json();
-      resultDiv.innerHTML = `<strong>Prediction:</strong> ${data.predicted_class} <br> <strong>Confidence:</strong> ${data.confidence}`;
+      let outputHTML = `<h3>Prediction Result:</h3>`;
+      outputHTML += `<p><strong>Predicted Class:</strong> ${data.predicted_class}</p>`;
+      outputHTML += `<p><strong>Confidence:</strong> ${data.confidence}</p>`;
+      
+      if (data.predictions) {
+        outputHTML += "<p><strong>Raw Predictions:</strong></p><ul>";
+        data.predictions.forEach((pred, index) => {
+          const predNumber = Number(pred);
+          if (!isNaN(predNumber)) {
+            outputHTML += `<li>Class ${index}: ${predNumber.toFixed(4)}</li>`;
+          } else {
+            outputHTML += `<li>Class ${index}: ${pred}</li>`;
+          }
+        });
+        outputHTML += "</ul>";
+      }
+      resultDiv.innerHTML = outputHTML;
     } catch (error) {
       resultDiv.textContent = "Error: " + error;
     }
