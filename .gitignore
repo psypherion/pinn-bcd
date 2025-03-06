@@ -173,3 +173,11 @@ cython_debug/
 kaggle/
 logs/
 data/
+
+processor/model_epoch_1.keras
+processor/model_epoch_2.keras
+processor/model_epoch_3.keras
+processor/model_epoch_4.keras
+processor/model_epoch_5.keras
+processor/model_epoch_6.keras
+processor/pathfixer.py

@@ -111,6 +111,7 @@ class ImagePathFixer:
                 print(f"Error processing row {indx} at column 13: {e}")
         return df
 
-
+"""
 correct_dir = "../kaggle/data/cbis-ddsm-breast-cancer-image-dataset/jpeg"
 fixer = ImagePathFixer(full_mammogram, cropped_images, roi_mask, correct_dir)
+"""
