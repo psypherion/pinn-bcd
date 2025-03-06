@@ -1,3 +1,4 @@
+// Handle image upload and prediction
 document.getElementById("uploadForm").addEventListener("submit", async function(e) {
     e.preventDefault();
     
@@ -11,10 +12,19 @@ document.getElementById("uploadForm").addEventListener("submit", async function(
     const formData = new FormData();
     formData.append("file", file);
     
-    // Show a loading message in the result div.
+    // Show the result container and set a loading message.
     const resultDiv = document.getElementById("result");
-    resultDiv.style.display = 'block';
-    resultDiv.textContent = "Uploading and processing image...";
+    const predictionContent = resultDiv.querySelector(".prediction-content");
+    resultDiv.style.display = 'flex';
+    predictionContent.textContent = "Uploading and processing image...";
+    
+    // Use FileReader to preview the image in the designated preview container.
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const previewImg = document.getElementById("preview-image");
+      previewImg.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
     
     try {
       const response = await fetch("/upload", {
@@ -23,7 +33,7 @@ document.getElementById("uploadForm").addEventListener("submit", async function(
       });
       
       if (!response.ok) {
-        resultDiv.textContent = "Error: " + response.statusText;
+        predictionContent.textContent = "Error: " + response.statusText;
         return;
       }
       
@@ -44,9 +54,53 @@ document.getElementById("uploadForm").addEventListener("submit", async function(
         });
         outputHTML += "</ul>";
       }
-      resultDiv.innerHTML = outputHTML;
+      
+      // Update prediction content with the results.
+      predictionContent.innerHTML = outputHTML;
+      
+      // Dynamically create and append the NGOs Near Me button.
+      const ngosButton = document.createElement("button");
+      ngosButton.textContent = "NGOs Near Me";
+      ngosButton.classList.add("ngos-button");
+      ngosButton.addEventListener("click", handleNgosClick);
+      predictionContent.appendChild(ngosButton);
+      
     } catch (error) {
-      resultDiv.textContent = "Error: " + error;
+      predictionContent.textContent = "Error: " + error;
     }
   });
+  
+  // Function to handle the NGOs Near Me button click.
+  function handleNgosClick() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        // Use OSM Nominatim for reverse geocoding.
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+          .then(response => response.json())
+          .then(data => {
+            // Extract city, town, or village as available.
+            const address = data.address;
+            let city = address.city || address.town || address.village || address.county;
+            if (city) {
+              if (confirm(`We detected your location as ${city}. Do you want to find NGOs near you?`)) {
+                window.location.href = `https://www.justdial.com/${encodeURIComponent(city)}/NGOS-For-Cancer-Patient`;
+              }
+            } else {
+              alert("Could not determine your nearest city.");
+            }
+          })
+          .catch(error => {
+            console.error("Reverse geocoding error:", error);
+            alert("Error retrieving location information.");
+          });
+      }, function(error) {
+        console.error("Geolocation error:", error);
+        alert("Error retrieving your location. Please ensure location services are enabled.");
+      });
+    } else {
+      alert("Geolocation is not supported by your browser.");
+    }
+  }
   

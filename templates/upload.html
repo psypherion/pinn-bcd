@@ -8,82 +8,114 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-<style>
+  <style>
     body {
-        font-family: 'Playfair Display', serif;
+      font-family: 'Playfair Display', serif;
     }
     /* Specific styles for upload.html - Pink Theme Update */
     .upload-section {
       text-align: center;
-      padding: 30px; /* Match padding from sections in styles.css */
+      padding: 30px;
     }
     .upload-form {
       display: inline-block;
-      margin-top: 30px; /* Match margin from sections in styles.css */
-      padding: 30px; /* Match padding from sections in styles.css */
-      background-color: rgba(255, 240, 245, 0.8); /* Lavender Blush - Glassmorphism Background */
-      border-radius: 15px; /* More rounded corners */
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05); /* Match shadow from sections in styles.css */
-      backdrop-filter: blur(10px); /* Glassmorphism blur */
+      margin-top: 30px;
+      padding: 30px;
+      background-color: rgba(255, 240, 245, 0.8); /* Lavender Blush */
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.4); /* Glassmorphism border */
+      border: 1px solid rgba(255, 255, 255, 0.4);
     }
     .upload-form label {
       display: block;
-      margin-bottom: 15px; /* Increased margin */
-      color: #555; /* Softer dark gray text color */
-      font-weight: 500; /* Lighter font weight */
+      margin-bottom: 15px;
+      color: #555;
+      font-weight: 500;
     }
     .upload-form input[type="file"] {
-      margin-bottom: 25px; /* Increased margin */
-      padding: 12px; /* Slightly larger padding */
-      border: 1px solid rgba(204, 204, 204, 0.7); /* Light border */
+      margin-bottom: 25px;
+      padding: 12px;
+      border: 1px solid rgba(204, 204, 204, 0.7);
       border-radius: 6px;
       width: 100%;
       box-sizing: border-box;
-      background-color: rgba(255, 255, 255, 0.7); /* Slightly transparent white background */
-      backdrop-filter: blur(5px); /* Subtle blur */
+      background-color: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(5px);
       -webkit-backdrop-filter: blur(5px);
     }
     .upload-form button {
-      padding: 12px 25px; /* Match button padding from styles.css */
+      padding: 12px 25px;
       border: none;
-      border-radius: 8px; /* Match button border-radius from styles.css */
-      background-color: #e9b0b0; /* Rose Quartz - Button background */
+      border-radius: 8px;
+      background-color: #e9b0b0; /* Rose Quartz */
       color: white;
       cursor: pointer;
       font-size: 1em;
-      transition: background-color 0.3s ease; /* Button hover transition */
-      font-weight: 500; /* Lighter font weight */
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Button shadow */
+      transition: background-color 0.3s ease;
+      font-weight: 500;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
     .upload-form button:hover {
-      background-color: #d87093; /* Pale Violet Red - Button hover color */
+      background-color: #d87093; /* Pale Violet Red */
     }
+    /* Result container in two columns */
     #result {
       margin-top: 30px;
-      padding: 30px; /* Match padding from sections in styles.css */
-      background-color: rgba(255, 240, 245, 0.8); /* Lavender Blush - Glassmorphism Background */
-      border-radius: 15px; /* More rounded corners */
-      border: 1px solid rgba(255, 255, 255, 0.4); /* Glassmorphism border */
-      backdrop-filter: blur(10px); /* Glassmorphism blur */
+      padding: 30px;
+      background-color: rgba(255, 240, 245, 0.8);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      text-align: left;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
       display: none; /* Hidden initially */
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05); /* Match shadow from sections in styles.css */
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+    #result .prediction-content {
+      flex: 1;
+      max-width: 600px;
+      text-align: left;
+      padding-right: 20px;
+    }
+    #result .preview {
+      flex: 0 0 150px;
+    }
+    #result .preview img {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    /* NGOs Button styling */
+    .ngos-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #e9b0b0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+    .ngos-button:hover {
+      background-color: #d87093;
     }
     #result h3 {
-      color: #e9b0b0; /* Rose Quartz - Result Title */
+      color: #e9b0b0;
       margin-top: 0;
-      border-bottom: 2px dotted #e9b0b0; /* Dotted border for softness */
+      border-bottom: 2px dotted #e9b0b0;
       padding-bottom: 5px;
       display: inline-block;
-      font-weight: 500; /* Lighter font weight */
+      font-weight: 500;
     }
     #result p {
-      margin-bottom: 15px; /* Increased margin */
-      color: #555; /* Softer dark gray text color */
+      margin-bottom: 15px;
+      color: #555;
     }
   </style>
 </head>
@@ -115,8 +147,14 @@
         </form>
       </div>
 
+      <!-- Prediction result container with two columns: prediction content (left) and preview image (right) -->
       <div id="result">
-        <!-- Prediction result will be displayed here -->
+        <div class="prediction-content">
+          <!-- Prediction results and NGOs button will be injected here -->
+        </div>
+        <div class="preview">
+          <img id="preview-image" src="" alt="Preview Image">
+        </div>
       </div>
     </section>
   </main>
