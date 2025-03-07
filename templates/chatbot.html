@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot - Breast Cancer Detection</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Playfair Display', serif;
+      background: linear-gradient(135deg, #FFD1DC, #FFE0E6);
+    }
+    /* Navbar styling (same as index) */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: rgba(255, 240, 245, 0.9);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .navbar a {
+      color: #555;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    /* Main section divided into two columns */
+    .main-container {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      padding: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .left-panel {
+      flex: 1;
+      max-width: 600px;
+      padding-right: 20px;
+    }
+    .right-panel {
+      flex: 1;
+      max-width: 600px;
+      padding-left: 20px;
+      border-left: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    /* Left panel styling for prediction results */
+    .prediction-section {
+      background-color: rgba(255, 240, 245, 0.8);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .prediction-section h3 {
+      color: #e9b0b0;
+      border-bottom: 2px dotted #e9b0b0;
+      padding-bottom: 5px;
+      margin-top: 0;
+    }
+    .prediction-section p {
+      color: #555;
+    }
+    .prediction-section img {
+      max-width: 100%;
+      margin-top: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    /* NGOs Button styling */
+    .ngos-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #e9b0b0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+    }
+    .ngos-button:hover {
+      background-color: #d87093;
+    }
+    /* Chatbot panel styling */
+    .chatbot-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      height: 500px;
+    }
+    .chatbot-messages {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .chatbot-input {
+      display: flex;
+    }
+    .chatbot-input input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px 0 0 8px;
+      outline: none;
+    }
+    .chatbot-input button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #e9b0b0;
+      color: white;
+      border-radius: 0 8px 8px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .chatbot-input button:hover {
+      background-color: #d87093;
+    }
+    /* Footer styling */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: rgba(255, 240, 245, 0.9);
+      margin-top: 30px;
+    }
+    footer a {
+      color: #e9b0b0;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="nav-left">
+        <a href="/"><img src="/static/image-modified.png" alt="Website Icon" style="height: 40px;"></a>
+      </div>
+      <div class="nav-right">
+        <a href="/">Home</a>
+      </div>
+    </nav>
+  </header>
+  
+  <!-- Main Content -->
+  <div class="main-container">
+    <!-- Left Panel: Prediction Results -->
+    <div class="left-panel">
+      <div class="prediction-section" id="predictionSection">
+        <!-- Prediction details, NGOs button, and image preview will be injected here -->
+      </div>
+    </div>
+    
+    <!-- Right Panel: Chatbot Interface -->
+    <div class="right-panel">
+      <div class="chatbot-container">
+        <div class="chatbot-messages" id="chatbotMessages">
+          <!-- Chat messages will appear here -->
+        </div>
+        <div class="chatbot-input">
+          <input type="text" id="chatInput" placeholder="Type your message...">
+          <button id="sendChat">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <footer>
+    <p>© 2023 Developed by <a href="https://github.com/psypherion" target="_blank">psypherion</a></p>
+  </footer>
+  
+  <script>
+    // Retrieve prediction data, preview image, and model description from sessionStorage
+    const predictionData = JSON.parse(sessionStorage.getItem("predictionData"));
+    const previewSrc = sessionStorage.getItem("previewSrc");
+    const modelDescription = sessionStorage.getItem("modelDescription") || "";
+    
+    const predictionSection = document.getElementById("predictionSection");
+    
+    // Build the prediction details HTML
+    let html = `<h3>Prediction Result:</h3>`;
+    html += `<p><strong>Predicted Class:</strong> ${predictionData.predicted_class}</p>`;
+    html += `<p><strong>Confidence:</strong> ${predictionData.confidence}</p>`;
+    if (predictionData.predictions) {
+      html += "<p><strong>Raw Predictions:</strong></p><ul>";
+      predictionData.predictions.forEach((pred, index) => {
+        const predNumber = Number(pred);
+        html += `<li>Class ${index}: ${!isNaN(predNumber) ? predNumber.toFixed(4) : pred}</li>`;
+      });
+      html += "</ul>";
+    }
+    html += `<p>${modelDescription}</p>`;
+    // Add a container for the NGOs button
+    html += `<div id="ngosButtonContainer"></div>`;
+    
+    predictionSection.innerHTML = html;
+    
+    // Dynamically create and append the NGOs Near Me button
+    const ngosButton = document.createElement("button");
+    ngosButton.textContent = "NGOs Near Me";
+    ngosButton.classList.add("ngos-button");
+    ngosButton.addEventListener("click", handleNgosClick);
+    document.getElementById("ngosButtonContainer").appendChild(ngosButton);
+    
+    // Append the preview image to the prediction section (if desired, you can adjust placement)
+    if (previewSrc) {
+      const img = document.createElement("img");
+      img.src = previewSrc;
+      predictionSection.appendChild(img);
+    }
+    
+    // Chatbot functionality
+    const chatbotMessages = document.getElementById("chatbotMessages");
+    const chatInput = document.getElementById("chatInput");
+    const sendChat = document.getElementById("sendChat");
+    
+    sendChat.addEventListener("click", () => {
+      const message = chatInput.value.trim();
+      if (message !== "") {
+        addChatMessage("user", message);
+        chatInput.value = "";
+        // Send the message along with prediction info to the /chat endpoint (Gemini API)
+        sendToGeminiAPI(message);
+      }
+    });
+    
+    function addChatMessage(sender, text) {
+      const msgDiv = document.createElement("div");
+      msgDiv.textContent = (sender === "user" ? "You: " : "Bot: ") + text;
+      chatbotMessages.appendChild(msgDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+    
+    // Function to send the prediction data and user message to the Gemini API (via your /chat endpoint)
+    function sendToGeminiAPI(message) {
+      const payload = {
+        // Combine prediction details, model description, preview image, and the chat message
+        prediction: predictionData,
+        modelDescription: modelDescription,
+        image: previewSrc,
+        message: message
+      };
+      
+      fetch("/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: JSON.stringify(payload) })  // You may choose how to format the payload message
+      })
+      .then(response => response.json())
+      .then(data => {
+        addChatMessage("bot", "Gemini API response: " + data.reply);
+      })
+      .catch(error => {
+        console.error("Gemini API error:", error);
+        addChatMessage("bot", "Error communicating with Gemini API.");
+      });
+    }
+    
+    // NGOs button handler
+    function handleNgosClick() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          // Use OSM Nominatim for reverse geocoding.
+          fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+            .then(response => response.json())
+            .then(data => {
+              const address = data.address;
+              let city = address.city || address.town || address.village || address.county;
+              if (city) {
+                if (confirm(`We detected your location as ${city}. Do you want to find NGOs near you?`)) {
+                  window.location.href = `https://www.justdial.com/${encodeURIComponent(city)}/NGOS-For-Cancer-Patient`;
+                }
+              } else {
+                alert("Could not determine your nearest city.");
+              }
+            })
+            .catch(error => {
+              console.error("Reverse geocoding error:", error);
+              alert("Error retrieving location information.");
+            });
+        }, function(error) {
+          console.error("Geolocation error:", error);
+          alert("Error retrieving your location. Please ensure location services are enabled.");
+        });
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    }
+  </script>
+</body>
+</html>
