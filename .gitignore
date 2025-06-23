@@ -181,3 +181,14 @@ processor/model_epoch_4.keras
 processor/model_epoch_5.keras
 processor/model_epoch_6.keras
 processor/pathfixer.py
+
+features/
+final_dataset/
+plots/
+processed/
+training_output_finetune/
+training_output_resnet_only/
+checkpoints/
+csv/
+model/
+runs/

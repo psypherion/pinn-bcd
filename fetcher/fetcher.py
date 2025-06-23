@@ -24,7 +24,7 @@ logging.info("Logging initialized. Writing logs to fetch_data.log")
 
 # Constants
 BASE_DIR: str = os.path.dirname(os.path.abspath(__file__))
-KAGGLE_SOURCE: str = "hayder17/breast-cancer-detection"
+KAGGLE_SOURCE: str = "awsaf49/cbis-ddsm-breast-cancer-image-dataset"
 DIR_NAME: str = KAGGLE_SOURCE.split("/")[-1]
 
 class FetchData:
