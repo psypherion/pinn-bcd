@@ -190,5 +190,7 @@ training_output_finetune/
 training_output_resnet_only/
 checkpoints/
 csv/
-model/
+
 runs/
+
+pinn/
